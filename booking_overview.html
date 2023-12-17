@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1em;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2em;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10;
+            left: 10;
+            padding: 0.5em;
+        }
+
+        .logo img {
+            max-height: 40px; /* Adjust the height as needed */
+        }
+
+
+        h1.booking {
+            font-size: 30px;
+            margin-bottom: 1em;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        p {
+            margin: 0.5em 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        button {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 0.5em;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: rgb(22, 22, 112);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .contact-section {
+            margin-top: 2em;
+        }
+
+        .social-media-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+        }
+
+        .social-media-link {
+            margin: 0 0.5em;
+        }
+
+        .connect-with-us {
+            margin-top: 1em;
+        }
+    </style>
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="hotel.html">
+                <img src="./Assets/images/Hotel-logo.jpeg" alt="Logo">
+            </a>
+        </div>
+        <h1 class="booking">Booking Overview</h1>
+    </header>
+
+    <div class="container">
+        <h2>User Details</h2>
+        <p><strong>Name:</strong> <span id="overviewName"></span></p>
+        <p><strong>Email:</strong> <span id="overviewEmail"></span></p>
+        <p><strong>Check-in Date:</strong> <span id="overviewCheckInDate"></span></p>
+        <p><strong>Check-out Date:</strong> <span id="overviewCheckOutDate"></span></p>
+        <p><strong>Total Nights:</strong> <span id="overviewTotalNights"></span></p>
+        <p><strong>Guests:</strong> <span id="overviewGuests"></span></p>
+
+        <h2>Selected Room</h2>
+        <ul id="selectedRoomsList"></ul>
+        <p id="totalAmount"></p>
+
+        <button onclick="confirmBooking()">Confirm Booking</button>
+        <button onclick="goToHomePage()">Back to Home</button>
+    </div>
+
+
+    <footer>
+
+        <!-- Contact Us Section -->
+        <div class="contact-section">
+            <h2>Contact Us</h2>
+            <p>Email: info@itc-hotel.com</p>
+            <p>Phone: +1 (123) 456-7890</p>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="social-media-links">
+            <a class="social-media-link" href="https://facebook.com" target="_blank">Facebook</a>
+            <a class="social-media-link" href="https://twitter.com" target="_blank">Twitter</a>
+            <a class="social-media-link" href="https://instagram.com" target="_blank">Instagram</a>
+        </div>
+
+        <!-- Connect With Us -->
+        <div class="connect-with-us">
+            <h2>Connect With Us</h2>
+            <p>Stay connected for updates and promotions!</p>
+            <input type="text" placeholder="Enter your email">
+            <button>Subscribe</button>
+        </div>
+
+        <p>&copy; 2023 MoonlightManor. All rights reserved.</p>
+
+    </footer>
+
+    <script>
+        // Retrieve user and room details from session storage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        const selectedRoom = JSON.parse(sessionStorage.getItem('selectedRoom'));
+
+        // Display user details
+        if (userDetails) {
+            document.getElementById('overviewName').innerText = `${userDetails.firstName} ${userDetails.lastName}`;
+            document.getElementById('overviewEmail').innerText = userDetails.email;
+            document.getElementById('overviewCheckInDate').innerText = userDetails.checkInDate;
+            document.getElementById('overviewCheckOutDate').innerText = userDetails.checkOutDate;
+            document.getElementById('overviewGuests').innerText = userDetails.guests;
+            document.getElementById('overviewTotalNights').innerText = userDetails.totalNights;
+        }
+
+        // Display selected room details
+        if (selectedRoom) {
+            const selectedRoomsList = document.getElementById('selectedRoomsList');
+            const totalAmount = document.getElementById('totalAmount');
+
+            selectedRoom.forEach(room => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${room.category} - $${room.price} per night`;
+                selectedRoomsList.appendChild(listItem);
+            });
+
+            // Calculate and display total amount
+            const totalPrice = selectedRoom.reduce((sum, room) => sum + room.price * userDetails.totalNights, 0);
+            totalAmount.innerText = `Total Amount: $${totalPrice}`;
+        }
+
+        function confirmBooking() {
+            // Add logic here to submit the booking details to your server/database
+            alert('Booking confirmed! Data submitted.');
+        }
+
+        function goToHomePage() {
+            // Redirect to the desired home page
+            window.location.href = 'booking.html';
+        }
+    </script>
+</body>
+</html>

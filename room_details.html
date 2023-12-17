@@ -1,0 +1,391 @@
+<!-- room_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1em;
+        }
+
+        header {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            text-align: center;
+            padding: 1em;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 0px;
+        }
+
+        .text {
+            font-size: 40px;
+        }
+
+        section {
+            padding: 1em;
+            background-color: #fff;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 20%;
+            height: auto;
+        }
+
+        .selected-item {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 500px; /* Adjust the width as needed */
+            height: auto; /* Adjust the height as needed */
+            margin: 1em;
+            border: 2px solid rgb(22, 22, 112);
+            padding: 1em;
+            border-radius: 8px;
+            background-color: white;
+            z-index: 999;
+        }
+
+        button {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 0.5em;
+            cursor: pointer;
+        }
+
+        .book-button {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 0.5em;
+            cursor: pointer;
+        }
+
+        .back-to-top-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            text-align: center;
+            padding: 3em;
+            position: relative;
+            margin-top: 2em; /* Adjust the margin as needed */
+        }
+
+        .footer-section {
+            flex: 1;
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .footer-section-left {
+            text-align: left;
+        }
+
+        .footer-section-center {
+            text-align: center;
+        }
+
+        .footer-section-right {
+            text-align: right;
+        }
+
+        h3 {
+            color: #f5a623;
+        }
+
+        p {
+            margin: 0.5em 0;
+        }
+
+        strong {
+            color: #f5a623;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f5a623;
+        }
+
+        .footer-social ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-social li {
+            margin: 0 10px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #f5a623;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <header class="text">
+        <a href="hotel.html" class="logo">
+            <img src="./Assets/images/Hotel-logo.jpeg" alt="Logo"></a>
+        Select the room
+    </header>
+
+    <div class="container">
+
+        <section>
+            <img src="Assets/images/single.jpg" alt="Room Image">
+            <h2>Single Room</h2>
+            <p>Price: $80 per night</p>
+            <p>A cozy haven adorned with contemporary furnishings, designed for solo travelers seeking comfort and modern amenities.</p>
+            <button onclick="selectRoom('Single Room', 80)">Select</button>
+        </section>
+
+        <section>
+            <img src="Assets/images/twin.jpg" alt="Room Image">
+            <h2>Twin Room</h2>
+            <p>Price: $150 per night</p>
+            <p>A harmonious blend of style and functionality, offering two comfortable beds in a well-appointed setting, perfect for companions traveling together.</p>
+            <button onclick="selectRoom('Twin Room', 150)">Select</button>
+        </section>
+
+        <section>
+            <img src="Assets/images/queen.jpg" alt="Room Image">
+            <h2>Queen Room</h2>
+            <p>Price: $280 per night</p>
+            <p>Elegance meets regality in this spacious chamber featuring a queen-sized bed, opulent décor, and a touch of royal sophistication.</p>
+            <button onclick="selectRoom('Queen Room', 280)">Select</button>
+        </section>
+
+        <section>
+            <img src="Assets/images/king.jpg" alt="Room Image">
+            <h2>King Room</h2>
+            <p>Price: $500 per night</p>
+            <p>Experience luxury at its peak in a grandiose space fit for royalty, boasting a king-sized bed, lavish furnishings, and unparalleled attention to detail.</p>
+            <button onclick="selectRoom('King Room', 500)">Select</button>
+        </section>
+
+        <section>
+            <img src="Assets/images/presidential.jpg" alt="Room Image">
+            <h2>Presidential Suite</h2>
+            <p>Price: $900 per night</p>
+            <p>The epitome of indulgence and prestige, this expansive suite redefines luxury with a private living area, panoramic views, exclusive amenities, and bespoke services fit for dignitaries and discerning guests.</p>
+            <button onclick="selectRoom('Presidential Suite', 900)">Select</button>
+        </section>
+
+        <!-- Box to describe the selected items -->
+        <div id="selectedItemBox" class="selected-item" style="display:none;">
+            <h3>Selected Rooms:</h3>
+            <ul id="selectedRoomsList"></ul>
+            <p id="totalAmount"></p>
+            <button class="book-button" onclick="bookRoom()">Book</button>
+            <button class="cancel-button" onclick="cancelAllSelection()">Cancel All</button>
+        </div>
+
+        <button class="back-to-top-btn" onclick="scrollToTop()">Back to Top</button>
+
+        <footer>
+            <div class="container">
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p>Moonlight Manor</p>
+                    <p>123 Luxury Street, Heidelberg</p>
+                    <p>Phone: <strong>+1-123-456-7890</strong></p>
+                    <p>Email: <strong>moonlightmanorhotel.com</strong></p>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="hotel.html">Home</a></li>
+                        <li><a href="room_details.html">Rooms & Suites</a></li>
+                        <li><a href="dining.html">Dining</a></li>
+                        <li><a href="services.html">Spa</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <ul>
+                        <li><a href="#" target="_blank">Facebook</a></li>
+                        <li><a href="#" target="_blank">Twitter</a></li>
+                        <li><a href="#" target="_blank">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="footer-copyright">&copy; 2023 Moonlight Manor. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+
+        function selectRoom(roomCategory, roomPrice) {
+            // Add the selected room to the array
+            selectedRooms.push({ id: selectedRooms.length + 1, category: roomCategory, price: roomPrice });
+
+            // Display selected item box with descriptions and total amount
+            const selectedItemBox = document.getElementById('selectedItemBox');
+            const selectedRoomsList = document.getElementById('selectedRoomsList');
+            const totalAmount = document.getElementById('totalAmount');
+
+            // Update the list of selected rooms
+            updateSelectedRoomsList(selectedRoomsList);
+
+            // Calculate and display total amount
+            const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
+            totalAmount.innerText = `Total Amount: $${totalPrice}`;
+
+            selectedItemBox.style.display = 'block';
+        }
+
+        function cancelSelection(roomId) {
+            // Remove the selected room by its ID
+            const roomIndex = selectedRooms.findIndex(room => room.id === roomId);
+            if (roomIndex !== -1) {
+                selectedRooms.splice(roomIndex, 1);
+            }
+
+            // Update the display in the selectedItemBox
+            const selectedRoomsList = document.getElementById('selectedRoomsList');
+            const totalAmount = document.getElementById('totalAmount');
+
+            // Update the list of selected rooms
+            updateSelectedRoomsList(selectedRoomsList);
+
+            // Calculate and display total amount
+            const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
+            totalAmount.innerText = `Total Amount: $${totalPrice}`;
+
+            // Hide the selectedItemBox if no rooms are selected
+            if (selectedRooms.length === 0) {
+                const selectedItemBox = document.getElementById('selectedItemBox');
+                selectedItemBox.style.display = 'none';
+            }
+        }
+
+        function updateSelectedRoomsList(selectedRoomsList) {
+            // Update the list of selected rooms
+            selectedRoomsList.innerHTML = '';
+            selectedRooms.forEach(room => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${room.category} - $${room.price} per night <button onclick="cancelSelection(${room.id})">Cancel</button>`;
+                selectedRoomsList.appendChild(listItem);
+            });
+        }
+
+        function cancelAllSelection() {
+            // Clear the selectedRooms array
+            selectedRooms.length = 0;
+
+            // Clear the display in the selectedItemBox
+            const selectedRoomsList = document.getElementById('selectedRoomsList');
+            const totalAmount = document.getElementById('totalAmount');
+
+            selectedRoomsList.innerHTML = '';
+            totalAmount.innerText = '';
+
+            // Hide the selectedItemBox
+            const selectedItemBox = document.getElementById('selectedItemBox');
+            selectedItemBox.style.display = 'none';
+        }
+
+         function bookRoom() {
+                // Ensure at least one room is selected
+                if (selectedRooms.length === 0) {
+                    alert('Please select at least one room before booking.');
+                    return;
+                }
+
+                // Calculate and store total amount in session storage
+                const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
+                sessionStorage.setItem('totalAmount', totalPrice);
+
+                // Store selected room details in session storage
+                sessionStorage.setItem('selectedRoom', JSON.stringify(selectedRooms));
+
+                // Redirect to booking_overview.html
+                window.location.replace('booking_overview.html');
+            }
+
+        function goToHomePage() {
+            // Redirect to the desired home page
+            window.location.href = 'booking.html';
+        }
+
+            // Show or hide back to top button based on scroll position
+            const backToTopBtn = document.querySelector('.back-to-top-btn');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 500) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            // Function to scroll smoothly to the top
+        function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+
+    </script>
+
+</body>
+</html>

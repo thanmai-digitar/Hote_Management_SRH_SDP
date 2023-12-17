@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Services</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .service {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .service:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .service h2 {
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .service p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .service img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .service {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="services-container">
+        <h1>Our Exclusive Services at Moonlight Manor</h1>
+        <div class="service" id="swimming-pool">
+            <h2>Swimming Pool</h2>
+            <p>Enjoy a refreshing swim in our luxury pool for $30 only.</p>
+            <img src="./Assets/images/swimmingpool.jpeg" alt="Swimming Pool">
+        </div>
+        <div class="service" id="sauna">
+            <h2>Sauna</h2>
+            <p>Relax in our state-of-the-art sauna for $50.</p>
+            <img src="./Assets/images/sauna.jpeg" alt="Sauna">
+        </div>
+        <div class="service" id="salon">
+            <h2>Salon</h2>
+            <p>Get pampered in our salon with services starting at $75.</p>
+            <img src="./Assets/images/salon.jpeg" alt="Salon">
+        </div>
+        <div class="service" id="fitness-centre">
+            <h2>Fitness Centre</h2>
+            <p>Maintain your fitness routine at our fully equipped gym for $20.</p>
+            <img src="./Assets/images/gym.jpg" alt="Fitness Centre">
+        </div>
+        <div class="service" id="spa">
+            <h2>Spa</h2>
+            <p>Indulge in a relaxing spa experience for just $30.</p>
+            <img src="./Assets/images/spa.jpeg" alt="Spa">
+        </div>
+    </div>
+</body>
+</html>

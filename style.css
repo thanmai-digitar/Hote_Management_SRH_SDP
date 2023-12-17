@@ -1,0 +1,96 @@
+body {
+    font-family: cursive, 'Times New Roman', Times, serif;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(22, 22, 112)
+}
+
+.navbar ul li {
+    float: right;
+}
+
+.navbar ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar ul li a:hover {
+    background-color: #111;
+}
+
+.hotel-photo img {
+    width: 100%;
+    height: auto;
+}
+
+.hotel-title {
+    position: absolute; /* Position the title absolutely within the hotel-photo div */
+    top: 30%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Align the center of the hotel-title with the center of the image */
+    font-family: cursive, 'Times New Roman', Times, serif;
+    color: rgb(0, 0, 0); /* Text color */
+    font-size: 60px; /* Text size */
+    text-shadow: 2px 2px 4px rgb(0, 0, 0); /* Text shadow for better readability */
+}
+
+.room-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.room {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.room-description {
+    text-align: center; /* This ensures everything inside is centered */
+    margin-bottom: 40px; /* Adjust as needed for spacing */
+}
+
+.room-title {
+    margin-bottom: 10px; /* Space between title and paragraph */
+    /* Add more styling as needed */
+}
+.room .description {
+    font-size: 20px;
+    flex: 1;
+    padding: 20px;
+}
+
+.room img {
+    width: 40%;
+    height: auto;
+    margin: 10px;
+}
+
+.left .description {
+    order: 1; /* Description comes first for odd-numbered rooms */
+}
+
+.right .description {
+    order: -1; /* Description comes after the image for even-numbered rooms */
+}
+
+@media (max-width: 768px) {
+    .room {
+        flex-direction: column;
+    }
+
+    .room img,
+    .room .description {
+        order: 0; /* Stack them on top of each other on smaller screens */
+        width: 100%;
+    }
+}
