@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1em;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2em;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 0.5em;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>My Bookings</h1>
+    </header>
+
+    <div class="container" id="bookingsContainer">
+        <!-- Booking summaries will be dynamically added here -->
+    </div>
+
+    <div class="container" id="bookingDetails" style="display: none;">
+        <!-- Detailed booking information will be displayed here when the user clicks on a name -->
+    </div>
+
+    <script>
+        // Dummy data representing multiple bookings
+        const bookingsData = [
+            {
+                name: 'John Doe',
+                email: 'john@example.com',
+                checkInDate: '2023-01-01',
+                checkOutDate: '2023-01-05',
+                totalNights: 4,
+                guests: 2,
+                room: {
+                    category: 'Presidential',
+                    price: 500,
+                },
+                services: [
+                    { name: 'Breakfast', amount: 120 },
+                    { name: 'WiFi', amount: 20 },
+                ],
+                totalServiceAmount: 140,
+                totalAmount: 2000,
+            },
+            // Add more booking data as needed
+            {
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                checkInDate: '2023-02-01',
+                checkOutDate: '2023-02-07',
+                totalNights: 6,
+                guests: 3,
+                room: {
+                    category: 'Deluxe',
+                    price: 300,
+                },
+                services: [
+                    { name: 'Parking', amount: 50 },
+                    { name: 'Spa', amount: 80 },
+                ],
+                totalServiceAmount: 130,
+                totalAmount: 2100,
+            },
+        ];
+
+        // Function to create HTML for each booking summary
+        function createBookingSummaryHTML(booking, index) {
+            const summaryHTML = `
+            <table>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Name</th>
+                    <th>Dates</th>
+                    <th>Room Type</th>
+                </tr>
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><button onclick="showBookingDetails(${index})">${booking.name}</button></td>
+                    <td>${booking.checkInDate} to ${booking.checkOutDate}</td>
+                    <td>${booking.room.category}</td>
+                </tr>
+            </table>
+            `;
+
+            return summaryHTML;
+        }
+
+        // Function to create HTML for each detailed booking information
+        function createBookingDetailsHTML(booking) {
+            const detailsHTML = `
+            <h1>${booking.name}'s Booking Details</h1>
+            <table>
+                <tr>
+                    <th>Name:</th>
+                    <td>${booking.name}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>${booking.email}</td>
+                </tr>
+                <tr>
+                    <th>Check-in Date:</th>
+                    <td>${booking.checkInDate}</td>
+                </tr>
+                <tr>
+                    <th>Check-out Date:</th>
+                    <td>${booking.checkOutDate}</td>
+                </tr>
+                <tr>
+                    <th>Total Nights:</th>
+                    <td>${booking.totalNights}</td>
+                </tr>
+                <tr>
+                    <th>Guests:</th>
+                    <td>${booking.guests}</td>
+                </tr>
+            </table>
+
+            <h2>Selected Room</h2>
+            <table>
+                <tr>
+                    <th>Room</th>
+                    <th>Price per Night</th>
+                </tr>
+                <tr>
+                    <td>${booking.room.category}</td>
+                    <td>$${booking.room.price}</td>
+                </tr>
+            </table>
+
+            <h2>Selected Services</h2>
+            <table>
+                <tr>
+                    <th>Service</th>
+                    <th>Amount</th>
+                </tr>
+                ${booking.services.map(service => `
+                    <tr>
+                        <td>${service.name}</td>
+                        <td>$${service.amount}</td>
+                    </tr>
+                `).join('')}
+            </table>
+
+            <p><strong>Total Service Amount:</strong> $${booking.totalServiceAmount}</p>
+            <p><strong>Total Amount:</strong> $${booking.totalAmount}</p>
+
+            <button onclick="goToHomePage()">Back to Home</button>
+            `;
+
+            return detailsHTML;
+        }
+
+        // Function to display detailed booking information
+        function showBookingDetails(index) {
+            const bookingDetailsContainer = document.getElementById('bookingDetails');
+            const bookingsContainer = document.getElementById('bookingsContainer');
+
+            // Hide booking summaries
+            bookingsContainer.style.display = 'none';
+
+            // Show detailed booking information
+            bookingDetailsContainer.innerHTML = createBookingDetailsHTML(bookingsData[index]);
+            bookingDetailsContainer.style.display = 'block';
+        }
+
+        // Function to go back to the booking summaries
+        function goToHomePage() {
+            const bookingDetailsContainer = document.getElementById('bookingDetails');
+            const bookingsContainer = document.getElementById('bookingsContainer');
+
+            // Show booking summaries
+            bookingsContainer.innerHTML = bookingsData.map((booking, index) => createBookingSummaryHTML(booking, index)).join('');
+            bookingsContainer.style.display = 'block';
+
+            // Hide detailed booking information
+            bookingDetailsContainer.style.display = 'none';
+        }
+
+        // Initial display of booking summaries
+        document.addEventListener('DOMContentLoaded', function () {
+            const bookingsContainer = document.getElementById('bookingsContainer');
+            bookingsContainer.innerHTML = bookingsData.map((booking, index) => createBookingSummaryHTML(booking, index)).join('');
+        });
+    </script>
+</body>
+
+</html>

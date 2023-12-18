@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,24 +24,13 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 1em;
+            padding: 3em;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 2em;
+            margin-bottom: 2em;
         }
-
-        .logo {
-            position: absolute;
-            top: 10;
-            left: 10;
-            padding: 0.5em;
-        }
-
-        .logo img {
-            max-height: 40px; /* Adjust the height as needed */
-        }
-
 
         h1.booking {
             font-size: 30px;
@@ -74,45 +65,133 @@
             margin-top: 1em;
         }
 
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: rgb(22, 22, 112);
+        .hotel-logo a {
+            text-decoration: none; /* Remove default link underline */
             color: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }
 
-        .contact-section {
-            margin-top: 2em;
+        .hotel-logo {
+            position: absolute;
+            top: 15px;
+            left: 70px;
         }
 
-        .social-media-links {
+        .hotel-logo img {
+            width: 50px;
+            height: auto;
+        }
+
+        footer {
+            background-color: rgb(22, 22, 112);
+            color: #fff;
+            text-align: center;
+            padding: 2em 0;
+        }
+
+        .footer-sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .footer-section-left {
+            text-align: left;
+        }
+
+        .footer-section-center {
+            text-align: center;
+        }
+
+        .footer-section-right {
+            text-align: right;
+        }
+
+        h3 {
+            color: #f5a623;
+        }
+
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f5a623;
+        }
+
+        .footer-social ul {
+            list-style: none;
+            padding: 0;
             display: flex;
             justify-content: center;
-            margin-top: 1em;
         }
 
-        .social-media-link {
-            margin: 0 0.5em;
+        .footer-social li {
+            margin: 0 10px;
         }
 
-        .connect-with-us {
-            margin-top: 1em;
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
         }
-    </style>
+
+        .footer-social a:hover {
+            color: #f5a623;
+        }
+
+        .footer-copyright {
+            margin-top: 20px;
+            font-size: 0.8em;
+        }
+
+        .back-to-top-btn {
+            display: none;
+            font-size: 0.8em;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
     </style>
 </head>
+
 <body>
     <header>
-        <div class="logo">
+        <h1 class="booking">Booking Overview</h1>
+        <div class="hotel-logo">
             <a href="hotel.html">
-                <img src="./Assets/images/Hotel-logo.jpeg" alt="Logo">
+                <img src="./Assets/images/hotel-logo.jpeg" alt="Hotel Logo">
             </a>
         </div>
-        <h1 class="booking">Booking Overview</h1>
     </header>
 
     <div class="container">
@@ -123,58 +202,82 @@
         <p><strong>Check-out Date:</strong> <span id="overviewCheckOutDate"></span></p>
         <p><strong>Total Nights:</strong> <span id="overviewTotalNights"></span></p>
         <p><strong>Guests:</strong> <span id="overviewGuests"></span></p>
+        <p><strong>Services:</strong> <span id="overviewServices"></span></p>
 
         <h2>Selected Room</h2>
         <ul id="selectedRoomsList"></ul>
+        <p id="totalServiceAmount"></p>
         <p id="totalAmount"></p>
 
+
         <button onclick="confirmBooking()">Confirm Booking</button>
-        <button onclick="goToHomePage()">Back to Home</button>
+        <button onclick="goToHomePage()">Back</button>
     </div>
 
+     <footer>
 
-    <footer>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Moonlight Manor</p>
+                <p>123 Luxury Street, Heidelberg</p>
+                <p>Phone: +49-123-456-7890</p>
+                <p>Email: MoonlightManorhotel@gmail.com</p>
+            </div>
 
-        <!-- Contact Us Section -->
-        <div class="contact-section">
-            <h2>Contact Us</h2>
-            <p>Email: info@itc-hotel.com</p>
-            <p>Phone: +1 (123) 456-7890</p>
-        </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="hotel.html">Home</a></li>
+                    <li><a href="booking.html">New Bookings</a></li>
+                    <li><a href="booking_overview.html">Bookings</a></li>
+                    <li><a href="services.html">Services</a></li>
 
-        <!-- Social Media Links -->
-        <div class="social-media-links">
-            <a class="social-media-link" href="https://facebook.com" target="_blank">Facebook</a>
-            <a class="social-media-link" href="https://twitter.com" target="_blank">Twitter</a>
-            <a class="social-media-link" href="https://instagram.com" target="_blank">Instagram</a>
-        </div>
+                </ul>
+            </div>
 
-        <!-- Connect With Us -->
-        <div class="connect-with-us">
-            <h2>Connect With Us</h2>
-            <p>Stay connected for updates and promotions!</p>
-            <input type="text" placeholder="Enter your email">
-            <button>Subscribe</button>
-        </div>
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <ul>
+                    <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                    <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                    <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
 
-        <p>&copy; 2023 MoonlightManor. All rights reserved.</p>
 
-    </footer>
+            <p class="footer-copyright">&copy; 2023 Moonlight Manor. All rights reserved.</p>
+     </footer>
+
+        <button class="back-to-top-btn" onclick="scrollToTop()">Back to Top</button>
+
 
     <script>
         // Retrieve user and room details from session storage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         const selectedRoom = JSON.parse(sessionStorage.getItem('selectedRoom'));
+        const selectedServices = JSON.parse(sessionStorage.getItem('selectedServices'));
 
-        // Display user details
         if (userDetails) {
+            // Display user details
             document.getElementById('overviewName').innerText = `${userDetails.firstName} ${userDetails.lastName}`;
             document.getElementById('overviewEmail').innerText = userDetails.email;
             document.getElementById('overviewCheckInDate').innerText = userDetails.checkInDate;
             document.getElementById('overviewCheckOutDate').innerText = userDetails.checkOutDate;
             document.getElementById('overviewGuests').innerText = userDetails.guests;
             document.getElementById('overviewTotalNights').innerText = userDetails.totalNights;
+
+            // Display selected services
+            const servicesListOverview = document.getElementById('overviewServices');
+
+            // Check if services are available
+            if (selectedServices && selectedServices.length > 0) {
+                servicesListOverview.innerHTML = `<strong>Services:</strong> <ul>${selectedServices.map(service => `<li>${service.name} - $${service.amount}</li>`).join('')}</ul>`;
+            } else {
+                servicesListOverview.innerHTML = "<strong></strong> No services selected.";
+            }
         }
+
+
 
         // Display selected room details
         if (selectedRoom) {
@@ -187,10 +290,31 @@
                 selectedRoomsList.appendChild(listItem);
             });
 
-            // Calculate and display total amount
-            const totalPrice = selectedRoom.reduce((sum, room) => sum + room.price * userDetails.totalNights, 0);
-            totalAmount.innerText = `Total Amount: $${totalPrice}`;
+            // Calculate and display total amount including room prices and selected services
+        const roomPrice = selectedRoom.reduce((sum, room) => sum + room.price * userDetails.totalNights, 0);
+        const servicesPrice = selectedServices ? selectedServices.reduce((sum, service) => sum + calculateServicePrice(service), 0) : 0;
+        const totalPrice = roomPrice + servicesPrice;
+
+        totalAmount.innerText = `Total Amount: $${totalPrice}`;
+        totalServiceAmount.innerText = `Total Service Amount: $${servicesPrice}`;
+    }
+
+    function calculateServicePrice(service) {
+        // Adjust the service prices based on the service type
+        switch (service.name.toLowerCase()) {
+            case 'breakfast':
+                return 30 * userDetails.totalNights * userDetails.guests;
+            case 'wifi':
+                return 20;
+            case 'parking':
+                return 10;
+            case 'spa':
+                return 50 * userDetails.guests;
+            default:
+                return 0;
         }
+    }
+
 
         function confirmBooking() {
             // Add logic here to submit the booking details to your server/database
@@ -203,4 +327,5 @@
         }
     </script>
 </body>
+
 </html>

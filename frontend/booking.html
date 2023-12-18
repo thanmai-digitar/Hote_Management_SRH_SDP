@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,63 +19,24 @@
             color: white;
             text-align: center;
             padding: 1em;
-            position: relative;
         }
 
-        .home-button {
-            display: none; /* Hide the home button */
+
+
+        .hotel-logo a {
+            text-decoration: none; /* Remove default link underline */
+            color: white;
         }
 
-        .home-icon {
+        .hotel-logo {
             position: absolute;
-            top: 1em;
-            left: 1em;
-            cursor: pointer;
+            top: 15px;
+            left: 70px;
         }
 
-        .home-icon img {
+        .hotel-logo img {
             width: 50px;
             height: auto;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1em;
-        }
-
-        section {
-            padding: 1em;
-            background-color: #fff;
-            margin-bottom: 1em;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-        label {
-            margin-bottom: 0.5em;
-        }
-
-        input, select, button {
-            padding: 0.5em;
-            margin-bottom: 1em;
-        }
-
-        button {
-            background-color: rgb(22, 22, 112);
-            color: white;
-            cursor: pointer;
-        }
-
-        #bookingOverview {
-            display: none;
         }
 
         footer {
@@ -83,40 +46,10 @@
             padding: 2em 0;
         }
 
-        .footer-sections {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .footer-section {
-            flex: 1;
-            text-align: left;
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        .footer-section-left {
-            flex: 4; /* Take up more space on the left */
-            text-align: left;
-        }
-
-        .footer-section-center {
-            flex: 1;
-            text-align: center;
-        }
-
-        .footer-section-right {
-            flex: 1;
-            text-align: right;
-        }
-
         h3 {
             color: #f5a623;
         }
+
 
         p {
             margin: 0.5em 0;
@@ -149,7 +82,7 @@
             list-style: none;
             padding: 0;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
         }
 
         .footer-social li {
@@ -159,7 +92,7 @@
         .footer-social a {
             color: #fff;
             text-decoration: none;
-            font-size: 1.5em;
+            font-size: 1em;
             transition: color 0.3s;
         }
 
@@ -172,18 +105,80 @@
             font-size: 0.8em;
         }
 
+        .back-to-top-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgb(22, 22, 112);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1em;
+        }
+
+        h1.booking {
+            font-size: 30px;
+        }
+
+        section {
+            padding: 1em;
+            background-color: #fff;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+        }
+
+        input,
+        select,
+        button {
+            padding: 0.5em;
+            margin-bottom: 1em;
+        }
+
+        button {
+            background-color: rgb(22, 22, 112);
+            color: white;
+            cursor: pointer;
+        }
+
+        #bookingOverview {
+            display: none;
+        }
     </style>
 </head>
+
 <body>
     <header>
-        <div class="home-icon" onclick="goToHomePage()">
-            <img src="./Assets/images/Hotel-logo.jpeg" alt="Hotel Logo">
-        </div>
         <h1 class="booking">Booking</h1>
+            <div class="hotel-logo">
+                <a href="hotel.html">
+                    <img src="./Assets/images/hotel-logo.jpeg" alt="Hotel Logo">
+                </a>
+            </div>
+
     </header>
 
     <div class="container">
-        <button class="home-button" onclick="goToHomePage()">Home</button>
+
         <section id="new-booking">
             <h2>New Booking</h2>
             <form id="bookingForm" onsubmit="submitForm(event)">
@@ -204,131 +199,180 @@
 
                 <label for="guests">Guests:</label>
                 <input type="number" id="guests" name="guests" required>
+
+                <label>Services:</label>
+                <div id="servicesCheckbox">
+                    <input type="checkbox" id="breakfast" name="services" value="breakfast" data-amount="30">
+                    <label for="breakfast">Breakfast $30 / Guest / Night</label><br>
+
+                    <input type="checkbox" id="wifi" name="services" value="wifi" data-amount="20">
+                    <label for="wifi">Wi-Fi $20 For entire stay</label><br>
+
+                    <input type="checkbox" id="parking" name="services" value="parking" data-amount="10">
+                    <label for="parking">Parking $10 one-time charge</label><br>
+
+                    <input type="checkbox" id="spa" name="services" value="spa" data-amount="50">
+                    <label for="spa">Spa $50 Per Session</label><br>
+                </div>
+                <button type="button" onclick="addService()">Add Service</button>
+
+                <div id="selectedServices">
+                    <label>Selected Services:</label>
+                    <ul id="servicesList"></ul>
+                </div>
+
                 <button type="submit">Submit</button>
             </form>
         </section>
 
-        <section id="bookingOverview" style="display:none;">
-            <h2>Booking Overview</h2>
-            <p id="overviewName"></p>
-            <p id="overviewDate"></p>
-            <p id="overviewService"></p>
-            <button onclick="confirmBooking()">Confirm Booking</button>
-        </section>
-
-
     </div>
 
+
     <footer>
-        <div class="container">
-            <div class="footer-contact">
-                <h3>Contact Us</h3>
-                <p>Moonlight Manor</p>
-                <p>123 Luxury Street, Heidelberg</p>
-                <p>Phone: <strong>+1-123-456-7890</strong></p>
-                <p>Email: <strong>MoonlightManorhotel.com</strong></p>
-            </div>
 
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="rooms.html">Rooms & Suites</a></li>
-                    <li><a href="dining.html">Dining</a></li>
-                    <li><a href="spa.html">Spa</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
+        <div class="footer-contact">
+            <h3>Contact Us</h3>
+            <p>Moonlight Manor</p>
+            <p>123 Luxury Street, Heidelberg</p>
+            <p>Phone: +49-123-456-7890</p>
+            <p>Email: MoonlightManorhotel@gmail.com</p>
+        </div>
 
-            <div class="footer-social">
-                <h3>Connect With Us</h3>
-                <ul>
-                    <li><a href="#" target="_blank">Facebook</a></li>
-                    <li><a href="#" target="_blank">Twitter</a></li>
-                    <li><a href="#" target="_blank">Instagram</a></li>
-                </ul>
-            </div>
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="hotel.html">Home</a></li>
+                <li><a href="booking.html">New Bookings</a></li>
+                <li><a href="booking_overview.html">Bookings</a></li>
+                <li><a href="services.html">Services</a></li>
+
+            </ul>
+        </div>
+
+        <div class="footer-social">
+            <h3>Connect With Us</h3>
+            <ul>
+                <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+            </ul>
         </div>
 
         <p class="footer-copyright">&copy; 2023 Moonlight Manor. All rights reserved.</p>
+
     </footer>
 
-    <script>
+        <button class="back-to-top-btn" onclick="scrollToTop()">Back to Top</button>
 
+
+    <script>
+        function addService() {
+            // Get the selected services from the checkboxes
+            const servicesCheckbox = document.querySelectorAll('input[name="services"]:checked');
+            const selectedServices = [...servicesCheckbox].map(checkbox => ({
+                name: checkbox.value,
+                amount: parseInt(checkbox.dataset.amount), // Convert the amount to an integer
+            }));
+
+            // Display the selected services
+            const servicesList = document.getElementById('servicesList');
+
+            // Clear the existing list
+            servicesList.innerHTML = '';
+
+            // Add the selected services to the list
+            selectedServices.forEach(service => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${service.name} - $${service.amount}`;
+                servicesList.appendChild(listItem);
+            });
+
+            // Store the selected services in the sessionStorage
+            sessionStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+
+            // Log selected services to console for debugging
+            console.log('Selected Services:', selectedServices);
+        }
+        function submitForm(event) {
+            event.preventDefault();
+
+            // Get form values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const checkInDate = document.getElementById('checkInDate').value;
+            const checkOutDate = document.getElementById('checkOutDate').value;
+            const guests = document.getElementById('guests').value;
+
+            // // Get selected services
+            // const servicesDropdown = document.getElementById('Services');
+            // const selectedServices = [...servicesDropdown.selectedOptions].map(option => option.value);
+
+            // Log selected services to console for debugging
+            console.log('Selected Services:', selectedServices);
+
+            // Validate check-in date
+            const currentDate = new Date().toISOString().split('T')[0];
+            if (checkInDate < currentDate) {
+                alert('Check-in date must be equal to or after the current date.');
+                return;
+            }
+
+            // Validate check-out date
+            if (checkOutDate <= checkInDate) {
+                alert('Check-out date must be greater than the check-in date.');
+                return;
+            }
+
+            if (guests <= 0) {
+                alert('Number of guests must be greater than 0.');
+                return;
+            }
+
+            // Calculate total nights
+            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            const totalNights = Math.round(Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / oneDay));
+
+            // Store user details, total nights, and services in session storage
+            const userDetails = {
+                firstName,
+                lastName,
+                email,
+                checkInDate,
+                checkOutDate,
+                guests,
+                totalNights,
+                Services: selectedServices
+            };
+
+            sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
+
+            // Redirect to room_details.html
+            window.location.replace('room_details.html');
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
-       // Set the min attribute for check-in date to the current date
-       const currentDate = new Date().toISOString().split('T')[0];
-       document.getElementById('checkInDate').min = currentDate;
-   });
+            // Set the min attribute for check-in date to the current date
+            const currentDate = new Date().toISOString().split('T')[0];
+            document.getElementById('checkInDate').min = currentDate;
+        });
 
-   function setCheckoutMin() {
-       // Set the min attribute for check-out date based on check-in date
-       const checkInDate = document.getElementById('checkInDate').value;
-       document.getElementById('checkOutDate').min = checkInDate;
-   }
+        function setCheckoutMin() {
+            // Set the min attribute for check-out date based on check-in date
+            const checkInDate = document.getElementById('checkInDate').value;
+            document.getElementById('checkOutDate').min = checkInDate;
+        }
 
-   function submitForm(event) {
-       event.preventDefault();
+        function confirmBooking() {
+            // Add logic here to submit the booking details to your server/database
+            alert('Booking confirmed! Data submitted.');
+        }
 
-       // Get form values
-       const firstName = document.getElementById('firstName').value;
-       const lastName = document.getElementById('lastName').value;
-       const email = document.getElementById('email').value;
-       const checkInDate = document.getElementById('checkInDate').value;
-       const checkOutDate = document.getElementById('checkOutDate').value;
-       const guests = document.getElementById('guests').value;
-
-       // Validate check-out date
-       if (checkOutDate <= checkInDate) {
-           alert('Check-out date must be greater than the check-in date.');
-           return;
-       }
-
-       if (guests <= 0) {
-       alert('Number of guests must be greater than 0.');
-       return;
-       }
-
-
-       // Calculate total nights
-       const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-       const totalNights = Math.round(Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / oneDay));
-
-       // Store user details and total nights in session storage
-       sessionStorage.setItem('userDetails', JSON.stringify({
-           firstName,
-           lastName,
-           email,
-           checkInDate,
-           checkOutDate,
-           guests,
-           totalNights
-
-       }));
-
-       // Redirect to room_details.html
-       window.location.replace('room_details.html');
-   }
-
-   function goToHomePage() {
-       // Redirect to the desired home page
-       window.location.href = 'hotel.html';
-   }
-
-   // Show the footer when scrolling to the bottom
-   window.addEventListener('scroll', function () {
-       const footer = document.querySelector('footer');
-       const scrollHeight = window.scrollY + window.innerHeight;
-       const documentHeight = document.documentElement.scrollHeight;
-
-       if (scrollHeight >= documentHeight - 20) {
-           footer.style.opacity = 1;
-       } else {
-           footer.style.opacity = 0;
-       }
-   });
-
+        function goToHomePage() {
+            // Redirect to the desired home page
+            window.location.href = 'hotel.html';
+        }
     </script>
 </body>
+
 </html>

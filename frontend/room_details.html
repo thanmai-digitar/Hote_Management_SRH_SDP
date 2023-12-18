@@ -37,6 +37,22 @@
             font-size: 40px;
         }
 
+        .hotel-logo a {
+            text-decoration: none; /* Remove default link underline */
+            color: white;
+        }
+
+        .hotel-logo {
+            position: absolute;
+            top: 15px;
+            left: 70px;
+        }
+
+        .hotel-logo img {
+            width: 50px;
+            height: auto;
+        }
+
         section {
             padding: 1em;
             background-color: #fff;
@@ -46,7 +62,7 @@
         }
 
         img {
-            max-width: 20%;
+            max-width: 100%;
             height: auto;
         }
 
@@ -93,30 +109,25 @@
 
         footer {
             background-color: rgb(22, 22, 112);
-            color: white;
+            color: #fff;
             text-align: center;
-            padding: 3em;
-            position: relative;
-            margin-top: 2em; /* Adjust the margin as needed */
+            padding: 2em 0;
+        }
+
+        .footer-sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .footer-section {
             flex: 1;
-            text-align: left;
-            margin-bottom: 20px;
-            padding: 0 10px;
-        }
-
-        .footer-section-left {
-            text-align: left;
-        }
-
-        .footer-section-center {
             text-align: center;
-        }
-
-        .footer-section-right {
-            text-align: right;
+            margin-bottom: 20px;
+            padding: 10px;
         }
 
         h3 {
@@ -153,18 +164,14 @@
         .footer-social ul {
             list-style: none;
             padding: 0;
-            display: flex;
-            justify-content: center;
+
         }
 
-        .footer-social li {
-            margin: 0 10px;
-        }
 
         .footer-social a {
             color: #fff;
             text-decoration: none;
-            font-size: 1.5em;
+            font-size: 1em;
             transition: color 0.3s;
         }
 
@@ -172,15 +179,22 @@
             color: #f5a623;
         }
 
+        .footer-copyright {
+            margin-top: 20px;
+            font-size: 0.8em;
+        }
     </style>
 
 </head>
 
 <body>
-    <header class="text">
-        <a href="hotel.html" class="logo">
-            <img src="./Assets/images/Hotel-logo.jpeg" alt="Logo"></a>
-        Select the room
+    <header>
+        <h1>Select The Room</h1>
+            <div class="hotel-logo">
+                <a href="hotel.html">
+                    <img src="./Assets/images/hotel-logo.jpeg" alt="Hotel Logo">
+                </a>
+            </div>
     </header>
 
     <div class="container">
@@ -189,7 +203,7 @@
             <img src="Assets/images/single.jpg" alt="Room Image">
             <h2>Single Room</h2>
             <p>Price: $80 per night</p>
-            <p>A cozy haven adorned with contemporary furnishings, designed for solo travelers seeking comfort and modern amenities.</p>
+            <p>Discover cozy comfort in our single bedroom, a haven of relaxation tailored for solo travelers seeking a restful retreat.</p>
             <button onclick="selectRoom('Single Room', 80)">Select</button>
         </section>
 
@@ -197,7 +211,7 @@
             <img src="Assets/images/twin.jpg" alt="Room Image">
             <h2>Twin Room</h2>
             <p>Price: $150 per night</p>
-            <p>A harmonious blend of style and functionality, offering two comfortable beds in a well-appointed setting, perfect for companions traveling together.</p>
+            <p>Indulge in shared comfort with our twin bedroom, a stylish haven featuring two separate beds for a delightful stay with a companion.</p>
             <button onclick="selectRoom('Twin Room', 150)">Select</button>
         </section>
 
@@ -205,7 +219,7 @@
             <img src="Assets/images/queen.jpg" alt="Room Image">
             <h2>Queen Room</h2>
             <p>Price: $280 per night</p>
-            <p>Elegance meets regality in this spacious chamber featuring a queen-sized bed, opulent décor, and a touch of royal sophistication.</p>
+            <p>Indulge in regal comfort with our queen bed room, offering a spacious and luxurious haven for a perfect night's sleep</p>
             <button onclick="selectRoom('Queen Room', 280)">Select</button>
         </section>
 
@@ -213,7 +227,7 @@
             <img src="Assets/images/king.jpg" alt="Room Image">
             <h2>King Room</h2>
             <p>Price: $500 per night</p>
-            <p>Experience luxury at its peak in a grandiose space fit for royalty, boasting a king-sized bed, lavish furnishings, and unparalleled attention to detail.</p>
+            <p>Indulge in luxury and spacious elegance in our King Bed Room, where comfort meets style for a regal stay.</p>
             <button onclick="selectRoom('King Room', 500)">Select</button>
         </section>
 
@@ -221,11 +235,10 @@
             <img src="Assets/images/presidential.jpg" alt="Room Image">
             <h2>Presidential Suite</h2>
             <p>Price: $900 per night</p>
-            <p>The epitome of indulgence and prestige, this expansive suite redefines luxury with a private living area, panoramic views, exclusive amenities, and bespoke services fit for dignitaries and discerning guests.</p>
+            <p>Indulge in unparalleled luxury and sophistication in our presidential suite, the epitome of opulence and grandeur for an unforgettable stay.</p>
             <button onclick="selectRoom('Presidential Suite', 900)">Select</button>
         </section>
 
-        <!-- Box to describe the selected items -->
         <div id="selectedItemBox" class="selected-item" style="display:none;">
             <h3>Selected Rooms:</h3>
             <ul id="selectedRoomsList"></ul>
@@ -236,32 +249,35 @@
 
         <button class="back-to-top-btn" onclick="scrollToTop()">Back to Top</button>
 
+    </div>
+
         <footer>
-            <div class="container">
+
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
                     <p>Moonlight Manor</p>
                     <p>123 Luxury Street, Heidelberg</p>
-                    <p>Phone: <strong>+1-123-456-7890</strong></p>
-                    <p>Email: <strong>moonlightmanorhotel.com</strong></p>
+                    <p>Phone: +49-123-456-7890</p>
+                    <p>Email: MoonlightManorhotel@gmail.com</p>
                 </div>
 
                 <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="hotel.html">Home</a></li>
-                        <li><a href="room_details.html">Rooms & Suites</a></li>
-                        <li><a href="dining.html">Dining</a></li>
-                        <li><a href="services.html">Spa</a></li>
+                        <li><a href="booking.html">New Bookings</a></li>
+                        <li><a href="booking_overview.html">Bookings</a></li>
+                        <li><a href="services.html">Services</a></li>
+
                     </ul>
                 </div>
 
                 <div class="footer-social">
                     <h3>Connect With Us</h3>
                     <ul>
-                        <li><a href="#" target="_blank">Facebook</a></li>
-                        <li><a href="#" target="_blank">Twitter</a></li>
-                        <li><a href="#" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com/" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
                     </ul>
                 </div>
             </div>
@@ -269,9 +285,10 @@
             <p class="footer-copyright">&copy; 2023 Moonlight Manor. All rights reserved.</p>
         </footer>
 
-    </div>
+
 
     <script>
+    const selectedRooms = [];  // Add this line to declare the selectedRooms array
 
         function selectRoom(roomCategory, roomPrice) {
             // Add the selected room to the array

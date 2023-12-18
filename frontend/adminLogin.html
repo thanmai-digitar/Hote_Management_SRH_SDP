@@ -93,11 +93,11 @@
                 <img src="./Assets/images/hotel-logo.jpeg" alt="Hotel Logo">
             </a>
         </div>
-        <h1>Hotel Login</h1>
+        <h1>Hotel Login Admin</h1>
     </header>
 
     <section>
-        <h2>Welcome Back!</h2>
+        <h2>Welcome Admin!</h2>
         <form id="validationForm">
             <label for="email">Email: </label>
             <input type="text" id="email" name="email" oninput="validateEmail()" required>
@@ -109,8 +109,7 @@
             <button type="button" onclick="loginUser()">Login</button>
         </form>
 
-        <p>Don't have an account? <a href="registration.html">Register here</a>.</p>
-        <p>Login as Admin? <a href="adminlogin.html">Click here</a>.</p>
+        <p>Login as User? <a href="login.html">Click here</a>.</p>
 
         <script>
             function validateEmail() {
@@ -138,21 +137,6 @@
                     document.getElementById('passwordResult').innerHTML = 'Valid password.';
                 } else {
                     document.getElementById('passwordResult').innerHTML = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.';
-                }
-            }
-
-            function loginUser() {
-                // Include your login logic here
-                var emailInput = document.getElementById('email').value;
-                var passwordInput = document.getElementById('password').value;
-
-                // Example: Check if the email and password are not empty
-                if (emailInput.trim() !== '' && passwordInput.trim() !== '') {
-                    // Perform your login actions here
-                    alert('Login successful!');
-                } else {
-                    // Handle empty email or password
-                    alert('Please enter both email and password.');
                 }
             }
 
