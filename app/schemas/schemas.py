@@ -24,9 +24,13 @@ class CustomerBase(BaseModel):
     Email: str
     Phone: str
 
-class CustomerCreate(CustomerBase):
-    Password: str  # Note: In a real application, ensure this is hashed!
-
+class CustomerCreate(BaseModel):
+    FirstName: str
+    LastName: str
+    Phone: str
+    Email: str
+    Password: str   
+    
 class CustomerUpdate(CustomerBase):
     pass
 
