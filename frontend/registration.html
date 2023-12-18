@@ -96,10 +96,13 @@
     <section>
         <h2>Create Your Account</h2>
     
-        <form id="validationForm" method="post" action="/customers">
-            <label for="name">Name: </label>
-            <input type="text" id="name" name="name" oninput="validateName()" required>
-            <p id="nameResult"></p>
+        <form id="registrationForm">
+            <label for="firstName">First Name:</label>
+            <input type="text"  name="first_name" id="first_name" required>
+            <p id="FirstnameResult"></p>
+            <label for="lastName">Last Name:</label>
+            <input type="text"  name="last_name" id="last_name"  required>
+            <p id="LasttnameResult"></p>
 
         
             <label for="email">Email: </label>
@@ -111,10 +114,10 @@
             <p id="passwordResult"></p>
         
             <label for="phoneNumber">Phone Number: </label>
-            <input type="text" id="phoneNumber" name="phoneNumber" oninput="validatePhoneNumber()" required>
+            <input type="text" id="phoneNumber" name="phone" oninput="validatePhoneNumber()" required>
             <p id="phoneResult"></p>
 
-            <button type="button" onclick="loginUser()">Register Now</button>
+            <button type="submit">Register Now</button>
         </form>
 
         <p>Already have an account? <a href="login.html">Login here</a>.</p>
@@ -133,19 +136,19 @@
                 }
             });
 
-            function validateName() {
-                var nameInput = document.getElementById('name');
-                var name = nameInput.value;
+            // function validateName() {
+            //     var nameInput = document.getElementById('name');
+            //     var name = nameInput.value;
 
-                // Validate name - Only allow letters and spaces
-                var namePattern = /^[a-zA-Z\s]+$/;
+            //     // Validate name - Only allow letters and spaces
+            //     var namePattern = /^[a-zA-Z\s]+$/;
 
-                if (namePattern.test(name)) {
-                    document.getElementById('nameResult').innerHTML = 'Valid name.';
-                } else {
-                    document.getElementById('nameResult').innerHTML = 'Please enter a valid name (only letters and spaces).';
-                }
-            }
+            //     if (namePattern.test(name)) {
+            //         document.getElementById('nameResult').innerHTML = 'Valid name.';
+            //     } else {
+            //         document.getElementById('nameResult').innerHTML = 'Please enter a valid name (only letters and spaces).';
+            //     }
+            // }
 
             function validateEmail() {
                 var emailInput = document.getElementById('email');
@@ -194,7 +197,7 @@
     <footer>
         <p>&copy; 2023 Moonlight Manor. All rights reserved.</p>
     </footer>
-
+    <script src="app.js"></script>
 </body>
 
 </html>
