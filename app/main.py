@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+
+from app.endpoints import employees, transactions
 from .endpoints import customers, rooms, bookings, services
 
 app = FastAPI()
@@ -27,7 +29,8 @@ app.include_router(customers.router, prefix="/customers", tags=["customers"])
 app.include_router(rooms.router, prefix="/rooms", tags=["rooms"])
 app.include_router(bookings.router, prefix="/bookings", tags=["bookings"])
 app.include_router(services.router, prefix="/services", tags=["services"])
-
+app.include_router(employees.router, prefix="/employees", tags=["employees"])
+app.include_router(transactions.router, prefix="/transactions", tags=["transactions"])
 @app.get("/")
 async def root():
     return {"message": "Hotel Management API is up and running!"}

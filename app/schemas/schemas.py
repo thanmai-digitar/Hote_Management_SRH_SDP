@@ -54,8 +54,8 @@ class Booking(BookingBase):
 
 # Schemas for Services
 class ServiceBase(BaseModel):
-    Description: str
-    Price: float
+    description: str
+    price: float
 
 class ServiceCreate(ServiceBase):
     pass
@@ -64,4 +64,35 @@ class ServiceUpdate(ServiceBase):
     pass
 
 class Service(ServiceBase):
-    ServiceID: int
+    serviceid: int
+
+#schemas for employees
+class EmployeeBase(BaseModel):
+    emp_name: str
+    serviceid: int  # Assuming this is a foreign key to a Service
+    description: str
+
+class EmployeeCreate(EmployeeBase):
+    pass
+
+class EmployeeUpdate(EmployeeBase):
+    pass
+
+class Employee(EmployeeBase):
+    employeeid: int
+
+#schemas for transactions
+class TransactionBase(BaseModel):
+    bookingid: int  # Assuming this is a foreign key to a Booking
+    customerid: int  # Assuming this is a foreign key to a Customer
+    total_amount: float
+    payment_type: str
+
+class TransactionCreate(TransactionBase):
+    pass
+
+class TransactionUpdate(TransactionBase):
+    pass
+
+class Transaction(TransactionBase):
+    transactionid: int
