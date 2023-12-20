@@ -7,8 +7,8 @@ from ..schemas.schemas import TransactionCreate, TransactionUpdate, Transaction
 router = APIRouter()
 db = MySQLCRUD('host', 'user', 'password', 'database')
 
-@router.post("/transactions", response_model=Transaction)
-def create_transaction(transaction: TransactionCreate):
+@router.post("/", response_model=Transaction)
+async def create_transaction(transaction: TransactionCreate):
     transaction_id = db.create('Transactions', list(transaction.dict().keys()), list(transaction.dict().values()))
     created_transaction = db.read('Transactions', conditions=f"WHERE transactionid = {transaction_id}")[0]
     return {
@@ -19,13 +19,13 @@ def create_transaction(transaction: TransactionCreate):
         "payment_type": created_transaction[4]
     }
 
-@router.get("/transactions", response_model=List[Transaction])
-def read_transactions():
+@router.get("/", response_model=List[Transaction])
+async def read_transactions():
     transactions_data = db.read('Transactions')
     return [{"transactionid": trans[0], "bookingid": trans[1], "customerid": trans[2], "total_amount": trans[3], "payment_type": trans[4]} for trans in transactions_data]
 
-@router.get("/transactions/{transaction_id}", response_model=Transaction)
-def read_transaction(transaction_id: int):
+@router.get("/{transaction_id}", response_model=Transaction)
+async def read_transaction(transaction_id: int):
     transaction = db.read('Transactions', conditions=f"WHERE transactionid = {transaction_id}")
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
@@ -37,8 +37,8 @@ def read_transaction(transaction_id: int):
         "payment_type": transaction[0][4]
     }
 
-@router.put("/transactions/{transaction_id}", response_model=Transaction)
-def update_transaction(transaction_id: int, transaction: TransactionUpdate):
+@router.put("/{transaction_id}", response_model=Transaction)
+async def update_transaction(transaction_id: int, transaction: TransactionUpdate):
     db.update('Transactions', transaction.dict(), f"transactionid = {transaction_id}")
     updated_transaction = db.read('Transactions', conditions=f"WHERE transactionid = {transaction_id}")[0]
     return {
@@ -49,7 +49,7 @@ def update_transaction(transaction_id: int, transaction: TransactionUpdate):
         "payment_type": updated_transaction[4]
     }
 
-@router.delete("/transactions/{transaction_id}")
-def delete_transaction(transaction_id: int):
+@router.delete("/{transaction_id}")
+async def delete_transaction(transaction_id: int):
     db.delete('Transactions', f"transactionid = {transaction_id}")
     return {"message": "Transaction deleted successfully."}

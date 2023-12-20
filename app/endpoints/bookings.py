@@ -9,13 +9,6 @@ from datetime import date, datetime
 router = APIRouter()
 db = MySQLCRUD('host', 'user', 'password', 'database')
 
-from fastapi import APIRouter, HTTPException
-from typing import List
-from ..crud.crud import MySQLCRUD
-from ..schemas.schemas import BookingCreate, BookingUpdate, Booking
-
-router = APIRouter()
-db = MySQLCRUD('host', 'user', 'password', 'database')
 
 def get_service_ids():
     services = db.read('Services')
@@ -50,24 +43,26 @@ def calculate_total_amount(room_id: int, service_id: Optional[int], checkin_date
 
 
 @router.post("/", response_model=Booking)
-def create_booking(booking: BookingCreate):
+async def create_booking(booking: BookingCreate):
     # Fetch IDs for validation
     service_ids = get_service_ids()
     room_ids = get_room_ids()
 
-   
     if booking.roomid not in room_ids:
         raise HTTPException(status_code=400, detail="Invalid RoomID")
 
-    # Calculate total amount
+    # Check if service ID is provided and valid
+    if booking.serviceid is not None and booking.serviceid not in service_ids:
+        raise HTTPException(status_code=400, detail="Invalid ServiceID")
 
+    # Calculate total amount
     total_amount = calculate_total_amount(booking.roomid, booking.serviceid, booking.checkin_date, booking.checkout_date)
 
     # Create booking with calculated total amount
     booking_data = booking.dict()
     booking_data['total_amount'] = total_amount
     booking_id = db.create('Bookings', list(booking_data.keys()), list(booking_data.values()))
-
+    db.update('Rooms', {'is_available': False}, f"roomid = {booking.roomid}")
     created_booking = db.read('Bookings', conditions=f"WHERE bookingid = {booking_id}")[0]
     return {
         "bookingid": created_booking[0],
@@ -80,7 +75,7 @@ def create_booking(booking: BookingCreate):
     }
 
 @router.get("/", response_model=List[Booking])
-def read_bookings():
+async def read_bookings():
     bookings_data = db.read('Bookings')
     return [{
         "bookingid": booking[0],
@@ -92,12 +87,34 @@ def read_bookings():
         "total_amount": booking[6]
     } for booking in bookings_data]
 
-@router.get("/{booking_id}", response_model=Booking)
-def read_booking(booking_id: int):
+
+@router.get("/{booking_id}/", response_model=Booking)
+async def read_booking(booking_id: int):
+    print(f"Fetching booking with ID: {booking_id}")  # Debugging print statement
     booking = db.read('Bookings', conditions=f"WHERE bookingid = {booking_id}")
+
     if not booking:
+        print("No booking found with this ID.")  # Debugging print statement
         raise HTTPException(status_code=404, detail="Booking not found")
+
+    booking_details = booking[0]
+    print(f"Booking details: {booking_details}")  # Debugging print statement
+
     return {
+        "bookingid": booking_details[0],
+        "customerid": booking_details[1],
+        "serviceid": booking_details[2],
+        "roomid": booking_details[3],
+        "checkin_date": booking_details[4],
+        "checkout_date": booking_details[5],
+        "total_amount": booking_details[6]
+    }
+
+
+@router.get('/{customerid}', response_model=List[Booking])
+async def get_user_bookings(customerid: int):
+    bookings_data = db.read('Bookings', conditions=f"WHERE customerid = {customerid}")
+    return [{
         "bookingid": booking[0],
         "customerid": booking[1],
         "serviceid": booking[2],
@@ -105,10 +122,12 @@ def read_booking(booking_id: int):
         "checkin_date": booking[4],
         "checkout_date": booking[5],
         "total_amount": booking[6]
-    }
+    } for booking in bookings_data]
+
+
 
 @router.put("/{booking_id}", response_model=Booking)
-def update_booking(booking_id: int, booking: BookingUpdate):
+async def update_booking(booking_id: int, booking: BookingUpdate):
     total_amount = calculate_total_amount(booking.roomid, booking.serviceid, booking.checkin_date, booking.checkout_date)
     booking_data = booking.dict()
     booking_data['total_amount'] = total_amount
@@ -124,7 +143,10 @@ def update_booking(booking_id: int, booking: BookingUpdate):
         "total_amount": updated_booking[6]
     }
 
-@router.delete("/{booking_id}")
-def delete_booking(booking_id: int):
+@router.delete("/{booking_id}/{roomid}")
+async def delete_booking(booking_id: int, roomid: int):
+    db.update('Rooms', {'is_available': True}, f"roomid = {roomid}")
     db.delete('Bookings', f"bookingid = {booking_id}")
     return {"message": "Booking deleted successfully."}
+
+

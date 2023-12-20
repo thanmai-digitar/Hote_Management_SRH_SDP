@@ -7,8 +7,8 @@ from ..schemas.schemas import EmployeeCreate, EmployeeUpdate, Employee
 router = APIRouter()
 db = MySQLCRUD('host', 'user', 'password', 'database')
 
-@router.post("/employees", response_model=Employee)
-def create_employee(employee: EmployeeCreate):
+@router.post("/", response_model=Employee)
+async def create_employee(employee: EmployeeCreate):
     employee_id = db.create('Employees', list(employee.dict().keys()), list(employee.dict().values()))
     created_employee = db.read('Employees', conditions=f"WHERE employeeid = {employee_id}")[0]
     return {
@@ -18,13 +18,13 @@ def create_employee(employee: EmployeeCreate):
         "description": created_employee[3]
     }
 
-@router.get("/employees", response_model=List[Employee])
-def read_employees():
+@router.get("/", response_model=List[Employee])
+async def read_employees():
     employees_data = db.read('Employees')
     return [{"employeeid": emp[0], "emp_name": emp[1], "serviceid": emp[2], "description": emp[3]} for emp in employees_data]
 
-@router.get("/employees/{employee_id}", response_model=Employee)
-def read_employee(employee_id: int):
+@router.get("/{employee_id}", response_model=Employee)
+async def read_employee(employee_id: int):
     employee = db.read('Employees', conditions=f"WHERE employeeid = {employee_id}")
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
@@ -35,8 +35,8 @@ def read_employee(employee_id: int):
         "description": employee[0][3]
     }
 
-@router.put("/employees/{employee_id}", response_model=Employee)
-def update_employee(employee_id: int, employee: EmployeeUpdate):
+@router.put("/{employee_id}", response_model=Employee)
+async def update_employee(employee_id: int, employee: EmployeeUpdate):
     db.update('Employees', employee.dict(), f"employeeid = {employee_id}")
     updated_employee = db.read('Employees', conditions=f"WHERE employeeid = {employee_id}")[0]
     return {
@@ -46,7 +46,7 @@ def update_employee(employee_id: int, employee: EmployeeUpdate):
         "description": updated_employee[3]
     }
 
-@router.delete("/employees/{employee_id}")
-def delete_employee(employee_id: int):
+@router.delete("/{employee_id}")
+async def delete_employee(employee_id: int):
     db.delete('Employees', f"employeeid = {employee_id}")
     return {"message": "Employee deleted successfully."}

@@ -104,7 +104,7 @@
             <p id="emailResult"></p>
         
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" oninput="validatePassword()" required>
+            <input type="password" id="password" name="password" required>
             <p id="passwordResult"></p>
             <button type="button" onclick="loginUser()">Login</button>
         </form>
@@ -126,19 +126,19 @@
                 }
             }
 
-            function validatePassword() {
-                var passwordInput = document.getElementById('password');
-                var password = passwordInput.value;
+            // function validatePassword() {
+            //     var passwordInput = document.getElementById('password');
+            //     var password = passwordInput.value;
 
-                // Validate password - At least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit
-                var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            //     // Validate password - At least 8 characters, including at least one uppercase letter, one lowercase letter, and one digit
+            //     var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-                if (passwordPattern.test(password)) {
-                    document.getElementById('passwordResult').innerHTML = 'Valid password.';
-                } else {
-                    document.getElementById('passwordResult').innerHTML = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.';
-                }
-            }
+            //     if (passwordPattern.test(password)) {
+            //         document.getElementById('passwordResult').innerHTML = 'Valid password.';
+            //     } else {
+            //         document.getElementById('passwordResult').innerHTML = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.';
+            //     }
+            // }
 
             window.addEventListener('scroll', function () {
                 const footer = document.querySelector('footer');
@@ -151,6 +151,38 @@
                     footer.style.display = 'none';
                 }
             });
+
+            function loginUser() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        // Create FormData object for sending login credentials
+        var formData = new FormData();
+        formData.append('username', email);
+        formData.append('password', password);
+
+        // Send a POST request to the admin login endpoint
+        fetch('http://localhost:8000/auth/admin/login', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle login success
+            console.log('Admin login successful:', data);
+            localStorage.setItem('admin_token', data.access_token);
+            window.location.href = '/admin.html';
+        })
+        .catch(error => {
+            console.error('Error during admin login:', error);
+            // Handle login error (e.g., show message to user)
+        });
+    }
 
         </script>
     </section>

@@ -19,6 +19,21 @@
             text-align: center;
             padding: 1em;
         }
+        .hotel-logo a {
+            text-decoration: none; /* Remove default link underline */
+            color: white;
+        }
+
+        .hotel-logo {
+            position: absolute;
+            top: 15px;
+            left: 70px;
+        }
+
+        .hotel-logo img {
+            width: 50px;
+            height: auto;
+        }
 
         .container {
             max-width: 800px;
@@ -62,9 +77,15 @@
 </head>
 
 <body>
-    <header>
-        <h1>My Bookings</h1>
+        <header>
+        <h1 class="booking">My Bookings</h1>
+        <div class="hotel-logo">
+            <a href="hotel.html">
+                <img src="./Assets/images/hotel-logo.jpeg" alt="Hotel Logo">
+            </a>
+        </div>
     </header>
+
 
     <div class="container" id="bookingsContainer">
         <!-- Booking summaries will be dynamically added here -->
@@ -72,170 +93,180 @@
 
     <div class="container" id="bookingDetails" style="display: none;">
         <!-- Detailed booking information will be displayed here when the user clicks on a name -->
+        <div class="container" id="customerDetails" style="display: none;"></div>
     </div>
 
     <script>
-        // Dummy data representing multiple bookings
-        const bookingsData = [
-            {
-                name: 'John Doe',
-                email: 'john@example.com',
-                checkInDate: '2023-01-01',
-                checkOutDate: '2023-01-05',
-                totalNights: 4,
-                guests: 2,
-                room: {
-                    category: 'Presidential',
-                    price: 500,
-                },
-                services: [
-                    { name: 'Breakfast', amount: 120 },
-                    { name: 'WiFi', amount: 20 },
-                ],
-                totalServiceAmount: 140,
-                totalAmount: 2000,
-            },
-            // Add more booking data as needed
-            {
-                name: 'Jane Smith',
-                email: 'jane@example.com',
-                checkInDate: '2023-02-01',
-                checkOutDate: '2023-02-07',
-                totalNights: 6,
-                guests: 3,
-                room: {
-                    category: 'Deluxe',
-                    price: 300,
-                },
-                services: [
-                    { name: 'Parking', amount: 50 },
-                    { name: 'Spa', amount: 80 },
-                ],
-                totalServiceAmount: 130,
-                totalAmount: 2100,
-            },
-        ];
 
-        // Function to create HTML for each booking summary
-        function createBookingSummaryHTML(booking, index) {
-            const summaryHTML = `
-            <table>
-                <tr>
-                    <th>Sr. No</th>
-                    <th>Name</th>
-                    <th>Dates</th>
-                    <th>Room Type</th>
-                </tr>
-                <tr>
-                    <td>${index + 1}</td>
-                    <td><button onclick="showBookingDetails(${index})">${booking.name}</button></td>
-                    <td>${booking.checkInDate} to ${booking.checkOutDate}</td>
-                    <td>${booking.room.category}</td>
-                </tr>
-            </table>
-            `;
+window.onload = function() {
+    fetchBookings();
+    checkLogin();
+};
 
-            return summaryHTML;
+function fetchBookings() {
+    const customerId = sessionStorage.getItem('customerid');
+    if (!customerId) {
+        console.error('No customer ID found in session storage.');
+        return;
+    }
+
+    fetch(`http://localhost:8000/bookings/${customerId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
+    })
+    .then(response => response.json())
+    .then(bookings => {
+        displayBookings(bookings);
+    })
+    .catch(error => {
+        console.error('Error fetching bookings:', error);
+    });
+}
 
-        // Function to create HTML for each detailed booking information
-        function createBookingDetailsHTML(booking) {
-            const detailsHTML = `
-            <h1>${booking.name}'s Booking Details</h1>
-            <table>
-                <tr>
-                    <th>Name:</th>
-                    <td>${booking.name}</td>
-                </tr>
-                <tr>
-                    <th>Email:</th>
-                    <td>${booking.email}</td>
-                </tr>
-                <tr>
-                    <th>Check-in Date:</th>
-                    <td>${booking.checkInDate}</td>
-                </tr>
-                <tr>
-                    <th>Check-out Date:</th>
-                    <td>${booking.checkOutDate}</td>
-                </tr>
-                <tr>
-                    <th>Total Nights:</th>
-                    <td>${booking.totalNights}</td>
-                </tr>
-                <tr>
-                    <th>Guests:</th>
-                    <td>${booking.guests}</td>
-                </tr>
-            </table>
 
-            <h2>Selected Room</h2>
-            <table>
-                <tr>
-                    <th>Room</th>
-                    <th>Price per Night</th>
-                </tr>
-                <tr>
-                    <td>${booking.room.category}</td>
-                    <td>$${booking.room.price}</td>
-                </tr>
-            </table>
+function displayCustomerDetails(customer){
+    const customerDetailsContainer = document.getElementById('customerDetails');
+    customerDetailsContainer.innerHTML = createCustomerDetailsHTML(customer);
+    customerDetailsContainer.style.display = 'block';
+    document.getElementById('bookingsContainer').style.display = 'none';
+}
 
-            <h2>Selected Services</h2>
-            <table>
-                <tr>
-                    <th>Service</th>
-                    <th>Amount</th>
-                </tr>
-                ${booking.services.map(service => `
-                    <tr>
-                        <td>${service.name}</td>
-                        <td>$${service.amount}</td>
-                    </tr>
-                `).join('')}
-            </table>
+function displayBookings(bookings) {
+    const bookingsContainer = document.getElementById('bookingsContainer');
+    bookingsContainer.innerHTML = bookings.map((booking, index) => createBookingSummaryHTML(booking, index)).join('');
+}
 
-            <p><strong>Total Service Amount:</strong> $${booking.totalServiceAmount}</p>
-            <p><strong>Total Amount:</strong> $${booking.totalAmount}</p>
-
-            <button onclick="goToHomePage()">Back to Home</button>
-            `;
-
-            return detailsHTML;
+function createBookingSummaryHTML(booking, index) {
+    // Fetch room details for each booking
+    fetch(`http://localhost:8000/rooms/${booking.roomid}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
+    })
+    .then(response => response.json())
+    .then(room => {
+        // Update the room type in the booking summary
+        document.getElementById(`roomType-${index}`).innerText = room.room_type;
+    })
+    .catch(error => {
+        console.error('Error fetching room details:', error);
+    });
 
-        // Function to display detailed booking information
-        function showBookingDetails(index) {
-            const bookingDetailsContainer = document.getElementById('bookingDetails');
-            const bookingsContainer = document.getElementById('bookingsContainer');
+    const summaryHTML = `
+    <table>
+            <tr>
+                <th>Sr. No</th>
+                <th>Dates</th>
+                <th>Room Type</th>
+                <th>Actions</th>
+            </tr>
+            <tr>
+                <td>${index + 1}</td>
+                <td>${booking.checkin_date} to ${booking.checkout_date}</td>
+                <td id="roomType-${index}">Loading...</td>
+                <td>
+                    <button onclick="showBookingDetails(${booking.bookingid})">View Details</button>
+                    <button onclick="deleteBooking(${booking.bookingid},${booking.roomid})">Delete</button>
+                </td>
+            </tr>
+        </table>
+    `;
+    return summaryHTML;
+}
 
-            // Hide booking summaries
-            bookingsContainer.style.display = 'none';
-
-            // Show detailed booking information
-            bookingDetailsContainer.innerHTML = createBookingDetailsHTML(bookingsData[index]);
-            bookingDetailsContainer.style.display = 'block';
-        }
-
-        // Function to go back to the booking summaries
-        function goToHomePage() {
-            const bookingDetailsContainer = document.getElementById('bookingDetails');
-            const bookingsContainer = document.getElementById('bookingsContainer');
-
-            // Show booking summaries
-            bookingsContainer.innerHTML = bookingsData.map((booking, index) => createBookingSummaryHTML(booking, index)).join('');
-            bookingsContainer.style.display = 'block';
-
-            // Hide detailed booking information
-            bookingDetailsContainer.style.display = 'none';
-        }
-
-        // Initial display of booking summaries
-        document.addEventListener('DOMContentLoaded', function () {
-            const bookingsContainer = document.getElementById('bookingsContainer');
-            bookingsContainer.innerHTML = bookingsData.map((booking, index) => createBookingSummaryHTML(booking, index)).join('');
+function deleteBooking(bookingId, roomid) {
+    if (confirm('Are you sure you want to delete this booking?')) {
+        fetch(`http://localhost:8000/bookings/${bookingId}/${roomid}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Booking deleted successfully.');
+                // Refresh the bookings list
+                fetchBookings();
+            } else {
+                alert('Failed to delete booking.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting booking:', error);
+            alert('An error occurred while deleting the booking.');
         });
+    }
+}
+
+function showBookingDetails(bookingId) {
+    const customerId = sessionStorage.getItem('customerid');
+
+    // Fetch customer details
+    fetch(`http://localhost:8000/customers/${customerId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => response.json())
+    .then(customer => {
+        // Fetch and display detailed booking information
+        fetch(`http://localhost:8000/bookings/${bookingId}/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        .then(booking => {
+            const bookingDetailsContainer = document.getElementById('bookingDetails');
+            bookingDetailsContainer.innerHTML = createBookingDetailsHTML(booking, customer);
+            bookingDetailsContainer.style.display = 'block';
+            document.getElementById('bookingsContainer').style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error fetching booking details:', error);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching customer details:', error);
+    });
+}
+
+
+function createBookingDetailsHTML(booking, customer) {
+    const checkInDate = booking.checkin_date;
+    const checkOutDate = booking.checkout_date;
+    const totalAmount = booking.total_amount;
+
+    const detailsHTML = `
+        <h1>Booking Details for ${customer.first_name} ${customer.last_name}</h1>
+        <p><strong>Customer Email:</strong> ${customer.email}</p>
+        <p><strong>Check-in Date:</strong> ${checkInDate}</p>
+        <p><strong>Check-out Date:</strong> ${checkOutDate}</p>
+        <p><strong>Total Amount:</strong> $${totalAmount}</p>
+        <button onclick="goToHomePage()">Back to Bookings</button>
+    `;
+    return detailsHTML;
+}
+
+
+function goToHomePage() {
+    document.getElementById('bookingDetails').style.display = 'none';
+    document.getElementById('bookingsContainer').style.display = 'block';
+}
+
+function checkLogin() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/login.html';
+    }
+}
     </script>
+
 </body>
 
 </html>

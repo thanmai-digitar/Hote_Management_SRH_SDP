@@ -142,19 +142,43 @@
             }
 
             function loginUser() {
-                // Include your login logic here
-                var emailInput = document.getElementById('email').value;
-                var passwordInput = document.getElementById('password').value;
+    var emailInput = document.getElementById('email').value;
+    var passwordInput = document.getElementById('password').value;
 
-                // Example: Check if the email and password are not empty
-                if (emailInput.trim() !== '' && passwordInput.trim() !== '') {
-                    // Perform your login actions here
-                    alert('Login successful!');
-                } else {
-                    // Handle empty email or password
-                    alert('Please enter both email and password.');
-                }
+    if (emailInput.trim() !== '' && passwordInput.trim() !== '') {
+        // Prepare form data
+        var formData = new URLSearchParams();
+        formData.append('username', emailInput);  // Using 'username' as key
+        formData.append('password', passwordInput);
+
+        // Send a POST request to the backend login endpoint
+        fetch('http://localhost:8000/auth/login', {  // Ensure this URL matches your backend endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            if (data.access_token) {
+                localStorage.setItem('token', data.access_token);
+                sessionStorage.setItem('customerid', data.customerid);
+                window.location.href = '/hotel.html';  // Update with your protected page
+            } else {
+                alert('Login failed. Please check your credentials.');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred during login.');
+        });
+    } else {
+        alert('Please enter both email and password.');
+    }
+}
+
 
             window.addEventListener('scroll', function () {
                 const footer = document.querySelector('footer');

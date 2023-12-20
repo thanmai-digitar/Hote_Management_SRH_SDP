@@ -8,6 +8,8 @@ class RoomBase(BaseModel):
     floor: int
     view_type: str
     room_price: float
+    room_desc: str
+    is_available: bool = True  # New field, defaulting to True
 
 class RoomCreate(RoomBase):
     pass
@@ -56,6 +58,7 @@ class Booking(BookingBase):
 class ServiceBase(BaseModel):
     description: str
     price: float
+    service_name:str
 
 class ServiceCreate(ServiceBase):
     pass

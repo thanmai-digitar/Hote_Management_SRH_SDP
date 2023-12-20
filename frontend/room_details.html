@@ -199,54 +199,7 @@
 
     <div class="container">
 
-        <section>
-            <img src="Assets/images/single.jpg" alt="Room Image">
-            <h2>Single Room</h2>
-            <p>Price: $80 per night</p>
-            <p>Discover cozy comfort in our single bedroom, a haven of relaxation tailored for solo travelers seeking a restful retreat.</p>
-            <button onclick="selectRoom('Single Room', 80)">Select</button>
-        </section>
-
-        <section>
-            <img src="Assets/images/twin.jpg" alt="Room Image">
-            <h2>Twin Room</h2>
-            <p>Price: $150 per night</p>
-            <p>Indulge in shared comfort with our twin bedroom, a stylish haven featuring two separate beds for a delightful stay with a companion.</p>
-            <button onclick="selectRoom('Twin Room', 150)">Select</button>
-        </section>
-
-        <section>
-            <img src="Assets/images/queen.jpg" alt="Room Image">
-            <h2>Queen Room</h2>
-            <p>Price: $280 per night</p>
-            <p>Indulge in regal comfort with our queen bed room, offering a spacious and luxurious haven for a perfect night's sleep</p>
-            <button onclick="selectRoom('Queen Room', 280)">Select</button>
-        </section>
-
-        <section>
-            <img src="Assets/images/king.jpg" alt="Room Image">
-            <h2>King Room</h2>
-            <p>Price: $500 per night</p>
-            <p>Indulge in luxury and spacious elegance in our King Bed Room, where comfort meets style for a regal stay.</p>
-            <button onclick="selectRoom('King Room', 500)">Select</button>
-        </section>
-
-        <section>
-            <img src="Assets/images/presidential.jpg" alt="Room Image">
-            <h2>Presidential Suite</h2>
-            <p>Price: $900 per night</p>
-            <p>Indulge in unparalleled luxury and sophistication in our presidential suite, the epitome of opulence and grandeur for an unforgettable stay.</p>
-            <button onclick="selectRoom('Presidential Suite', 900)">Select</button>
-        </section>
-
-        <div id="selectedItemBox" class="selected-item" style="display:none;">
-            <h3>Selected Rooms:</h3>
-            <ul id="selectedRoomsList"></ul>
-            <p id="totalAmount"></p>
-            <button class="book-button" onclick="bookRoom()">Book</button>
-            <button class="cancel-button" onclick="cancelAllSelection()">Cancel All</button>
-        </div>
-
+       <!-- Dynamic room content will be loaded here -->
         <button class="back-to-top-btn" onclick="scrollToTop()">Back to Top</button>
 
     </div>
@@ -265,10 +218,9 @@
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="hotel.html">Home</a></li>
-                        <li><a href="booking.html">New Bookings</a></li>
-                        <li><a href="booking_overview.html">Bookings</a></li>
                         <li><a href="services.html">Services</a></li>
-
+                        <li><a href="mybookings.html">My Bookings</a></li>
+                        <li><a href="room_details.html">Rooms</a></li>
                     </ul>
                 </div>
 
@@ -290,117 +242,85 @@
     <script>
     const selectedRooms = [];  // Add this line to declare the selectedRooms array
 
-        function selectRoom(roomCategory, roomPrice) {
-            // Add the selected room to the array
-            selectedRooms.push({ id: selectedRooms.length + 1, category: roomCategory, price: roomPrice });
+    function fetchRooms() {
+    fetch('http://localhost:8000/rooms')
+        .then(response => response.json())
+        .then(allRooms => {
+            const aggregatedRooms = aggregateRooms(allRooms);
+            fetchAvailableRooms(aggregatedRooms);
+        })
+        .catch(error => console.error('Error fetching rooms:', error));
+}
 
-            // Display selected item box with descriptions and total amount
-            const selectedItemBox = document.getElementById('selectedItemBox');
-            const selectedRoomsList = document.getElementById('selectedRoomsList');
-            const totalAmount = document.getElementById('totalAmount');
-
-            // Update the list of selected rooms
-            updateSelectedRoomsList(selectedRoomsList);
-
-            // Calculate and display total amount
-            const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
-            totalAmount.innerText = `Total Amount: $${totalPrice}`;
-
-            selectedItemBox.style.display = 'block';
+function aggregateRooms(rooms) {
+    const roomTypes = {};
+    rooms.forEach(room => {
+        if (!roomTypes[room.room_type]) {
+            roomTypes[room.room_type] = {
+                price: room.room_price,
+                desc: room.room_desc,
+                id: room.roomid,
+                count: 0  // Initialize count to 0
+            };
         }
+    });
+    return roomTypes;
+}
 
-        function cancelSelection(roomId) {
-            // Remove the selected room by its ID
-            const roomIndex = selectedRooms.findIndex(room => room.id === roomId);
-            if (roomIndex !== -1) {
-                selectedRooms.splice(roomIndex, 1);
-            }
-
-            // Update the display in the selectedItemBox
-            const selectedRoomsList = document.getElementById('selectedRoomsList');
-            const totalAmount = document.getElementById('totalAmount');
-
-            // Update the list of selected rooms
-            updateSelectedRoomsList(selectedRoomsList);
-
-            // Calculate and display total amount
-            const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
-            totalAmount.innerText = `Total Amount: $${totalPrice}`;
-
-            // Hide the selectedItemBox if no rooms are selected
-            if (selectedRooms.length === 0) {
-                const selectedItemBox = document.getElementById('selectedItemBox');
-                selectedItemBox.style.display = 'none';
-            }
+function fetchAvailableRooms(aggregatedRooms) {
+    fetch('http://localhost:8000/rooms/available/',{
+        headers:{
+            'Cache-Control': 'no-cache'
         }
-
-        function updateSelectedRoomsList(selectedRoomsList) {
-            // Update the list of selected rooms
-            selectedRoomsList.innerHTML = '';
-            selectedRooms.forEach(room => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `${room.category} - $${room.price} per night <button onclick="cancelSelection(${room.id})">Cancel</button>`;
-                selectedRoomsList.appendChild(listItem);
-            });
-        }
-
-        function cancelAllSelection() {
-            // Clear the selectedRooms array
-            selectedRooms.length = 0;
-
-            // Clear the display in the selectedItemBox
-            const selectedRoomsList = document.getElementById('selectedRoomsList');
-            const totalAmount = document.getElementById('totalAmount');
-
-            selectedRoomsList.innerHTML = '';
-            totalAmount.innerText = '';
-
-            // Hide the selectedItemBox
-            const selectedItemBox = document.getElementById('selectedItemBox');
-            selectedItemBox.style.display = 'none';
-        }
-
-         function bookRoom() {
-                // Ensure at least one room is selected
-                if (selectedRooms.length === 0) {
-                    alert('Please select at least one room before booking.');
-                    return;
-                }
-
-                // Calculate and store total amount in session storage
-                const totalPrice = selectedRooms.reduce((sum, room) => sum + room.price, 0);
-                sessionStorage.setItem('totalAmount', totalPrice);
-
-                // Store selected room details in session storage
-                sessionStorage.setItem('selectedRoom', JSON.stringify(selectedRooms));
-
-                // Redirect to booking_overview.html
-                window.location.replace('booking_overview.html');
-            }
-
-        function goToHomePage() {
-            // Redirect to the desired home page
-            window.location.href = 'booking.html';
-        }
-
-            // Show or hide back to top button based on scroll position
-            const backToTopBtn = document.querySelector('.back-to-top-btn');
-
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 500) {
-                    backToTopBtn.style.display = 'block';
-                } else {
-                    backToTopBtn.style.display = 'none';
+    })
+        .then(response => response.json())
+        .then(availableRooms => {
+            availableRooms.forEach(room => {
+                if (aggregatedRooms[room.room_type]) {
+                    aggregatedRooms[room.room_type].count++;
                 }
             });
+            displayRooms(aggregatedRooms);
+        })
+        .catch(error => console.error('Error fetching available rooms:', error));
+}
 
-            // Function to scroll smoothly to the top
-        function scrollToTop() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
+function displayRooms(aggregatedRooms) {
+    const container = document.querySelector('.container');
+    container.innerHTML = '';  // Clear existing content
+
+    Object.keys(aggregatedRooms).forEach(roomType => {
+        const room = aggregatedRooms[roomType];
+        const section = document.createElement('section');
+        section.innerHTML = `
+            <img src="Assets/images/${getImageForRoomType(roomType)}" alt="${roomType}">
+            <h2>${roomType}</h2>
+            <p>Price: $${room.price} per night</p>
+            <p>${room.desc}</p>
+            <p>Available Rooms: ${room.count}</p>
+            <button onclick="selectRoom(${room.id}, ${room.price})">Select</button>
+        `;
+        container.appendChild(section);
+    });
+}
+function selectRoom(roomid, roomPrice) {
+    sessionStorage.setItem('selectedRoomID', roomid);
+    sessionStorage.setItem('selectedRoomPrice', roomPrice);
+    window.location.href = 'booking.html';
+}
+
+function getImageForRoomType(roomType) {
+    const imageMap = {
+        "Single bedroom": "single.jpg",
+        "Queens bedroom": "queen.jpg",
+        "Twin bedroom": "twin.jpg",
+        "Kings bedroom": "king.jpg",
+        "Presidential suite": "presidential.jpg"
+    };
+    return imageMap[roomType] || 'default.jpg';
+}
+        window.onload = fetchRooms;
+
 
     </script>
 

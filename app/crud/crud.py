@@ -1,4 +1,7 @@
 import mysql.connector
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class MySQLCRUD:
     def __init__(self, host, user, password, database):
@@ -43,3 +46,16 @@ class MySQLCRUD:
     def close(self):
         self.mycursor.close()
         self.mydb.close()
+    
+    def create_admin(self, email, password):
+        hashed_password = pwd_context.hash(password)
+        return self.create('admin', ['email', 'password'], [email, hashed_password])
+
+    def read_admin(self, email):
+        return self.read('admin', conditions=f"WHERE email = '{email}'")
+
+    def update_admin(self, email, new_data):
+        return self.update('admin', new_data, f"email = '{email}'")
+
+    def delete_admin(self, email):
+        return self.delete('admin', f"email = '{email}'")

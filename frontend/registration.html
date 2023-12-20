@@ -190,6 +190,36 @@
                 }
             }
 
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Create a FormData object
+        const formData = new FormData(event.target);
+
+        fetch('http://localhost:8000/customers/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer YOUR_TOKEN_HERE`, // Replace with actual token if needed
+                // 'Content-Type': 'application/json' is removed because FormData uses 'multipart/form-data'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(() => {
+            alert('Registration successful');
+            window.location.href = 'login.html'; // Redirect to login page or another page as needed
+        })
+        .catch(error => {
+            console.error('Error during registration:', error);
+            alert('Error during registration.');
+        });
+    });
+
 
         </script>
     </section>
@@ -197,7 +227,7 @@
     <footer>
         <p>&copy; 2023 Moonlight Manor. All rights reserved.</p>
     </footer>
-    <script src="app.js"></script>
+
 </body>
 
 </html>
